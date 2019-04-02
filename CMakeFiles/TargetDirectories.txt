@@ -1,4 +1,0 @@
-C:/Users/amomorning/source/repos/DigitalGeometryProcessing/build/CMakeFiles/Deformation.dir
-C:/Users/amomorning/source/repos/DigitalGeometryProcessing/build/CMakeFiles/Test.dir
-C:/Users/amomorning/source/repos/DigitalGeometryProcessing/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/amomorning/source/repos/DigitalGeometryProcessing/build/CMakeFiles/ZERO_CHECK.dir

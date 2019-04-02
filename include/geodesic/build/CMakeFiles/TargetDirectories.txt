@@ -1,0 +1,2 @@
+C:/Users/amomorning/iCloudDrive/_OnWorking/计算机毕业设计/geodesic/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/amomorning/iCloudDrive/_OnWorking/计算机毕业设计/geodesic/build/CMakeFiles/ZERO_CHECK.dir
