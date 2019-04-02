@@ -1,0 +1,23 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeCXXInformation.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeGenericSystem.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeInitializeConfigs.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeLanguageInformation.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeRCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/Compiler/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/Compiler/MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/Platform/Windows.cmake
+C:/Program Files/CMake/share/cmake-3.12/Modules/Platform/WindowsPaths.cmake
+C:/Users/amomorning/source/repos/DigitalGeometryProcessing/CMakeLists.txt
+C:/Users/amomorning/source/repos/DigitalGeometryProcessing/build/CMakeFiles/3.12.0-rc1/CMakeCCompiler.cmake
+C:/Users/amomorning/source/repos/DigitalGeometryProcessing/build/CMakeFiles/3.12.0-rc1/CMakeCXXCompiler.cmake
+C:/Users/amomorning/source/repos/DigitalGeometryProcessing/build/CMakeFiles/3.12.0-rc1/CMakeRCCompiler.cmake
+C:/Users/amomorning/source/repos/DigitalGeometryProcessing/build/CMakeFiles/3.12.0-rc1/CMakeSystem.cmake
