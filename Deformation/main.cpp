@@ -46,14 +46,14 @@ void laplacianCotanWeight(const Surface_mesh &mesh,
 }
 
 void work(const Eigen::SparseMatrix<double> &L, const Eigen::Matrix3Xd &V, Eigen::MatrixXd &newV) {
-	std::vector<int> fix_idx;
-	for (int i = 0; i < 10; ++i) fix_idx.push_back(i);
+	std::vector<int> fix_idx = { 12481 };
+	for (int i = 0; i < 200; ++i) fix_idx.push_back(i);
 
 	std::vector<int> move_idx = { 5792 };
 	std::vector<Point> move_coord;
 
 	for (auto id : move_idx) {
-		move_coord.push_back(Point(V(0, id), V(1, id), V(2, id) + 0.7));
+		move_coord.push_back(Point(V(0, id) + 0.1, V(1, id) - 0.1, V(2, id) + 0.5));
 	}
 	
 
