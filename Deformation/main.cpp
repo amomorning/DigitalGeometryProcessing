@@ -49,11 +49,11 @@ void work(const Eigen::SparseMatrix<double> &L, const Eigen::Matrix3Xd &V, Eigen
 	std::vector<int> fix_idx;
 	for (int i = 0; i < 10; ++i) fix_idx.push_back(i);
 
-	std::vector<int> move_idx = { 5676, 5764, 5792, 5815, 5665, 5717 };
+	std::vector<int> move_idx = { 5792 };
 	std::vector<Point> move_coord;
 
 	for (auto id : move_idx) {
-		move_coord.push_back(Point(V(0, id), V(1, id) + 0.1, V(2, id) + 0.5));
+		move_coord.push_back(Point(V(0, id), V(1, id), V(2, id) + 0.7));
 	}
 	
 
@@ -73,7 +73,7 @@ void work(const Eigen::SparseMatrix<double> &L, const Eigen::Matrix3Xd &V, Eigen
 		b.insert(VERTS + i, 2) = V(2, fix_idx[i]);
 	}
 	for (int i = 0; i < move_idx.size(); ++i) {
-		A.coeffRef(VERTS + i + fix_idx.size(), move_idx[i]);
+		A.coeffRef(VERTS + i + fix_idx.size(), move_idx[i]) = 1;
 
 		b.insert(VERTS + i + fix_idx.size(), 0) = move_coord[i][0];
 		b.insert(VERTS + i + fix_idx.size(), 1) = move_coord[i][1];
@@ -84,7 +84,10 @@ void work(const Eigen::SparseMatrix<double> &L, const Eigen::Matrix3Xd &V, Eigen
 	}
 
 	Eigen::SimplicialCholesky<Eigen::SparseMatrix<double> > solver(A.transpose()*A);
-	newV = solver.solve(A.transpose()*b).toDense();
+	newV.resize(VERTS, 3);
+	for (int i = 0; i < 3; ++i) {
+		newV.col(i) = solver.solve(A.transpose()*b.col(i)).toDense();
+	}
 }
 
 int main() {
