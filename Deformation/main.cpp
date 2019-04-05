@@ -13,20 +13,20 @@ const int VERTS = 12500;
 void laplacianCotanWeight(const Surface_mesh &mesh,
 	Eigen::SparseMatrix<double> &cotan)
 {
-	Surface_mesh::Face_iterator fit;
-	auto points = mesh.get_vertex_property<Point>("v:point");
-
-	fit = mesh.faces_begin();
 	std::vector<Eigen::Triplet<double> > tri;
-	do {
-		Surface_mesh::Vertex_around_face_circulator vf = mesh.vertices(*fit);
+	for (const auto &fit : mesh.faces())
+	{
+		int i = 0;
 		Point p[3];
 		int id[3];
 		double cot[3];
-		for (int i = 0; i < 3; ++i, ++vf) {
-			p[i] = points[*vf];
-			id[i] = (*vf).idx();
+		for (const auto &vit : mesh.vertices(fit))
+		{
+			p[i] = mesh.position(vit);
+			id[i] = vit.idx();
+			++i;
 		}
+
 
 		double sum = 0;
 		for (int i = 0; i < 3; ++i) {
@@ -39,32 +39,52 @@ void laplacianCotanWeight(const Surface_mesh &mesh,
 		}
 
 		for (int i = 0; i < 3; ++i) {
-			tri.push_back({ id[i], id[i], 0.5*(cot[(i + 1) % 3], cot[(i + 2) % 3]) });
+			tri.push_back({ id[i], id[i], 0.5*(cot[(i + 1) % 3] + cot[(i + 2) % 3]) });
 		}
-
-	} while (++fit != mesh.faces_end());
+	}
 	cotan.setFromTriplets(tri.begin(), tri.end());
 }
 
-void work(Eigen::SparseMatrix<double> &cotan) {
+void work(const Eigen::SparseMatrix<double> &L, const Eigen::Matrix3Xd &V, Eigen::MatrixXd &newV) {
 	std::vector<int> fix_idx;
 	for (int i = 0; i < 10; ++i) fix_idx.push_back(i);
 
-	std::vector<int> move_idx;
-	move_idx.push_back(5792);
+	std::vector<int> move_idx = { 5676, 5764, 5792, 5815, 5665, 5717 };
+	std::vector<Point> move_coord;
 
+	for (auto id : move_idx) {
+		move_coord.push_back(Point(V(0, id), V(1, id) + 0.1, V(2, id) + 0.5));
+	}
+	
 
-	Eigen::SparseMatrix<double> A = cotan, ATA, ATb;
+	Eigen::SparseMatrix<double> A = L;
 	A.conservativeResize(VERTS + fix_idx.size() + move_idx.size(), VERTS);
 
-	std::vector<Eigen::Triplet<double> > tri;
+	Eigen::SparseMatrix<double> v = V.transpose().sparseView();
+	Eigen::SparseMatrix<double> b = L * v;
+	
+	b.conservativeResize(VERTS + fix_idx.size() + move_idx.size(), 3);
+
 	for (int i = 0; i < fix_idx.size(); ++i) {
 		A.coeffRef(VERTS + i, fix_idx[i]) = 1;
+
+		b.insert(VERTS + i, 0) = V(0, fix_idx[i]);
+		b.insert(VERTS + i, 1) = V(1, fix_idx[i]);
+		b.insert(VERTS + i, 2) = V(2, fix_idx[i]);
 	}
 	for (int i = 0; i < move_idx.size(); ++i) {
 		A.coeffRef(VERTS + i + fix_idx.size(), move_idx[i]);
+
+		b.insert(VERTS + i + fix_idx.size(), 0) = move_coord[i][0];
+		b.insert(VERTS + i + fix_idx.size(), 1) = move_coord[i][1];
+		b.insert(VERTS + i + fix_idx.size(), 2) = move_coord[i][2];
+		cout << V.col(move_idx[i]) << endl;
+		cout << "move to : \n";
+		cout << move_coord[i][0] << " " << move_coord[i][1] << " " << move_coord[i][2] << endl;
 	}
-	ATA = A.transpose() * A;
+
+	Eigen::SimplicialCholesky<Eigen::SparseMatrix<double> > solver(A.transpose()*A);
+	newV = solver.solve(A.transpose()*b).toDense();
 }
 
 int main() {
@@ -80,7 +100,15 @@ int main() {
 	Eigen::SparseMatrix<double> cotan(VERTS, VERTS);
 	laplacianCotanWeight(mesh, cotan);
 
+	puts("ok");
+	Eigen::MatrixXd newV;
 
-	work(cotan);
+
+	work(cotan, V, newV);
+
+	common::save_obj("../data/newAVE.obj", newV.transpose(), F);
+	puts("ok");
+
+	//work(cotan);
 
 }
