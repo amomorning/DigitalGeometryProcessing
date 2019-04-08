@@ -17,5 +17,8 @@ include_directories("include")
 # src - deformation
 add_executable(Deformation "Deformation/main.cpp")
 
+# src - Round
+add_executable(Round "Round/main.cpp")
+
 #src - test
 add_executable(Test "Test/main.cpp")

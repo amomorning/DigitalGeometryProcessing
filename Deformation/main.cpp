@@ -27,19 +27,17 @@ void laplacianCotanWeight(const Surface_mesh &mesh,
 			++i;
 		}
 
-
-		double sum = 0;
 		for (int i = 0; i < 3; ++i) {
 			int j = (i + 1) % 3, k = (j + 1) % 3;
-			cot[i] = dot(p[j] - p[i], p[k] - p[i]) /
+			cot[i] = 0.5*dot(p[j] - p[i], p[k] - p[i]) /
 				norm(cross(p[j] - p[i], p[k] - p[i]));
 
-			tri.push_back({ id[j], id[k], -0.5*cot[i] });
-			tri.push_back({ id[k], id[j], -0.5*cot[i] });
+			tri.push_back({ id[j], id[k], cot[i] });
+			tri.push_back({ id[k], id[j], cot[i] });
 		}
 
 		for (int i = 0; i < 3; ++i) {
-			tri.push_back({ id[i], id[i], 0.5*(cot[(i + 1) % 3] + cot[(i + 2) % 3]) });
+			tri.push_back({ id[i], id[i], -(cot[(i + 1) % 3] + cot[(i + 2) % 3]) });
 		}
 	}
 	cotan.setFromTriplets(tri.begin(), tri.end());
@@ -90,6 +88,7 @@ void work(const Eigen::SparseMatrix<double> &L, const Eigen::Matrix3Xd &V, Eigen
 	}
 }
 
+
 int main() {
 	Eigen::Matrix3Xd V;
 	Eigen::Matrix3Xi F;
@@ -106,11 +105,10 @@ int main() {
 	puts("ok");
 	Eigen::MatrixXd newV;
 
-
 	work(cotan, V, newV);
 
 	common::save_obj("../data/newAVE.obj", newV.transpose(), F);
-	puts("ok");
+	puts("saved");
 
 	//work(cotan);
 
