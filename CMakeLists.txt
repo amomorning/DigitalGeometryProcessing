@@ -17,8 +17,8 @@ include_directories("include")
 # src - deformation
 add_executable(Deformation "Deformation/main.cpp")
 
-# src - Round
-add_executable(Round "Round/main.cpp")
+# src - Mapping
+add_executable(Mapping "Mapping/main.cpp" "Mapping/laplace.cpp" "Mapping/single_patch_parameterization.cpp" )
 
 #src - test
 add_executable(Test "Test/main.cpp")
